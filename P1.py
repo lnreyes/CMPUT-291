@@ -89,6 +89,9 @@ def setup_oracle_connection():
 
     return
 
+
+
+
 def register_vehicle():
     # Connect to database
     try:
@@ -99,24 +102,87 @@ def register_vehicle():
         print(sys.stderr, "Oracle code: ", error.code)
         print(sys.stderr, "Oracle message: ", error.message)
         return
-    #-----------------
+
     valid = False
     while not valid:
+        
         # Get serial_no of car from user
         while True:
             serial_no = input('Please enter the serial number of the vehicle: ').strip()
             if serial_no == 'q':
                 exit()
-            elif int(serial_no):
+            elif len(serial_no) == 15:
+                
                 # Look up serial number if it's already registered
                 try:
-                    curs.execute("SELECT serial_no FROM vehicle WHERE serial_no = '{0}'".format(serial_no))
+                    curs.execute("SELECT serial_no FROM vehicle WHERE serial_no = int('{0}')".format(serial_no))
                     result.curs.fetchall()
-                
-                    
+                except cx_Oracle.DatabaseError as exception:
+                    error = exception.args
+                    print(sys.stderr, "Oracle code: ", error.code)
+                    print(sys.stderr, "Oracle message: ", error.message)
+                    return
+                        
+                if result:
+                    print('Vehicle has already been registered. Please try again.')
+                else:
+                    # Register vehicle
+                    try:
+                        maker = input('Please enter the serial number of the vehicle: ').strip()
+                        model = input('Please enter the serial number of the vehicle: ').strip()
+                        year = input('Please enter the serial number of the vehicle: ').strip()
+                        color = input('Please enter the serial number of the vehicle: ').strip()
+                        type_id = input('Please enter the serial number of the vehicle: ').strip()
+                        
+                        #UNSURE ABOUT TYPE_ID BEING CONVERTED TO AN INT // do we even need type_id?
+                        curs.execute("""INSERT INTO vehicle VALUES
+                                        (int('{0}'), '{1}', '{2}', '{3}', '{4}', int('{5}'))"""
+                                        .format(serial_no, maker, model, year, color, type_id)
+                        con.commit()
+                    except cx_Oracle.DatabaseError as exception:
+                        error = exception.args
+                        print(sys.stderr, "Oracle code: ", error.code)
+                        print(sys.stderr, "Oracle message: ", error.message)
+                        return
+                                     
+                    # Register person
+                    try:
+                        maker = input('Please enter the serial number of the vehicle: ').strip()
+                        model = input('Please enter the serial number of the vehicle: ').strip()
+                        year = input('Please enter the serial number of the vehicle: ').strip()
+                        color = input('Please enter the serial number of the vehicle: ').strip()
+                        type_id = input('Please enter the serial number of the vehicle: ').strip()
+                                     
+                        curs.execute("""INSERT INTO vehicle VALUES
+                            (int('{0}'), '{1}', '{2}', '{3}', '{4}', int('{5}'))"""
+                            .format(serial_no, maker, model, year, color, type_id)
+                        con.commit()
+                        except cx_Oracle.DatabaseError as exception:
+                            error = exception.args
+                            print(sys.stderr, "Oracle code: ", error.code)
+                            print(sys.stderr, "Oracle message: ", error.message)
+                            return
+                                     
+                    # Register owner
+                    try:
+                        maker = input('Please enter the serial number of the vehicle: ').strip()
+                        model = input('Please enter the serial number of the vehicle: ').strip()
+                        year = input('Please enter the serial number of the vehicle: ').strip()
+                        color = input('Please enter the serial number of the vehicle: ').strip()
+                        type_id = input('Please enter the serial number of the vehicle: ').strip()
+                                    
+                        curs.execute("""INSERT INTO vehicle VALUES
+                            (int('{0}'), '{1}', '{2}', '{3}', '{4}', int('{5}'))"""
+                            .format(serial_no, maker, model, year, color, type_id)
+                        con.commit()
+                        except cx_Oracle.DatabaseError as exception:
+                            error = exception.args
+                            print(sys.stderr, "Oracle code: ", error.code)
+                            print(sys.stderr, "Oracle message: ", error.message)
+                            return
+                                
+    valid = True
 
-    
-    #-----------------
     try:
         curs.close()
         con.close()
@@ -127,6 +193,9 @@ def register_vehicle():
         return
 
     #return something
+
+
+
 
 def transaction():
     #TO DO
@@ -153,6 +222,9 @@ def transaction():
 
     #return something
 
+
+
+
 def register_license():
     #TO DO
     # Connect to database
@@ -178,6 +250,9 @@ def register_license():
 
     #return something
 
+
+
+
 def record_violation():
     #TO DO
     # Connect to database
@@ -202,6 +277,9 @@ def record_violation():
         return
 
     #return something
+
+
+
 
 def search():
     # Connect to database
