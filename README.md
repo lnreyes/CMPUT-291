@@ -1,4 +1,5 @@
-The system consists of the following five application programs.
+#CMPUT 291 - Mini Project 1
+The system consists of the following five application programs
 
 ## New Vehicle Registration
 
