@@ -48,10 +48,48 @@ def main():
 
 
 def setup_oracle_connection():
-    #TO DO
+    global ORACLE_USER
+    global ORACLE_PSWD
+    global CONNECT_INFO
+
+    while True:
+        # Get account info
+        ORACLE_USER = input('Please enter Oracle username: ')
+        ORACLE_PSWD = getpass.getpass('Please enter Oracle password: ')
+        CONNECT_INFO = '{0}/{1}@gwynne.cs.ualberta.ca:1521/CRS'.format(ORACLE_USER, ORACLE_PSWD)
+        PART_SIZE = 1
+
+        # Connect to database
+        try:
+            con = cx_Oracle.connect(CONNECT_INFO)
+            curs = con.cursor()
+        except cx_Oracle.DatabaseError as exception:
+            error = exception.args
+            print(sys.stderr, "Oracle code: ", error.code)
+            print(sys.stderr, "Oracle message: ", error.message)
+            return
+                
+    try:
+        curs.close()
+        con.close()
+    except cx_Oracle.DatabaseError as exception:
+        error = exception.args
+        print(sys.stderr, "Oracle code: ", error.code)
+        print(sys.stderr, "Oracle message: ", error.message)
+        return
+
+    return
 
 def register_vehicle():
-    #TO DO
+    # Connect to database
+    try:
+        con = cx_Oracle.connect(CONNECT_INFO)
+            curs = con.cursor()
+        except cx_Oracle.DatabaseError as exception:
+            error = exception.args
+            print(sys.stderr, "Oracle code: ", error.code)
+            print(sys.stderr, "Oracle message: ", error.message)
+            return
 
 def transaction():
     #TO DO
